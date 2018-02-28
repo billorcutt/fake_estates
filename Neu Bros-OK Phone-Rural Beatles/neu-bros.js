@@ -253,6 +253,7 @@ function update_monome() {
         if(!monome_model[el]) {
             __.monome_led_off(previous_monome_model[el].x,previous_monome_model[el].y);
         }
+
     });
 
     //update the monome from the current model
