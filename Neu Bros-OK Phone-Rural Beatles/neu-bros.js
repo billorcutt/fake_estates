@@ -1,4 +1,4 @@
-//Neu Bros/OK Phone/Rural Beatles
+//LATEST THING Neu Bros/OK Phone/Rural Beatles
 
 /*
  length min/max |
@@ -120,24 +120,11 @@ __.loop(tempo,function(f) {
 
 });
 
-/* monome code below */
+/* monome code below **************************************/
 //the model
-var monome_model = [];
-
-//set up the model
-function init_model() {
-    for(var i=0;i<16;i++) {
-        var arr = [];
-        for(var j=0;j<8;j++) {
-            arr.push({
-                "led_state":0,
-                "x":i,
-                "y":j
-            });
-        }
-        monome_model.push(arr);
-    }
-}
+var monome_model = {};
+//copy the old one
+var previous_monome_model = {};
 
 //dispatch events to the right functions
 function dispatch_event(item) {
@@ -147,13 +134,11 @@ function dispatch_event(item) {
                 item.led_state = item.led_state ? 0 : 1;
                 break;
             default:
-                clear_column_control(item.x);
                 item.led_state = 1;
                 break;
         }
         dispatch_control(item);
     } else {
-        clear_column(item.x);
         item.led_state = 1;
         switch(item.x) {
             case 0:
@@ -223,50 +208,66 @@ function dispatch_event(item) {
 }
 
 //clear the column
-function clear_column_control(x) {
-    monome_model[x].forEach(function(el,idx,arr){
-        if(idx < 7) {
-            el.led_state = 0;
-        }
-    });
-}
-
-//clear the column
 function clear_column(x) {
-    monome_model[x].forEach(function(el,idx,arr){
-        if(idx < 8) {
-            el.led_state = 0;
-        }
-    });
-}
-
-//clear the row
-function clear_row(y) {
-    monome_model.forEach(function(el,idx,arr){
-        if(el[y].x!==0) {
-            el[y].led_state = 0;
+    Object.keys(monome_model).map(function(el,idx,arr){
+        if(!(x === 15 && monome_model[el].y===7)) {
+            var regexp = new RegExp('mn_col_'+x+"_");
+            if(regexp.test(el)) {
+                delete monome_model[el];
+            }
         }
     });
 }
 
 //handle press events
 function handle_press(x,y) {
-    var item = monome_model[x][y];
-    dispatch_event(item);
+
+    var item;
+
+    if(!(x===15 && y === 7)) {
+        clear_column(x);
+    }
+
+    if(monome_model['mn_col_'+x+'_row_'+y]) {
+        item = monome_model['mn_col_'+x+'_row_'+y];
+    } else {
+        item = {
+            "led_state":0,
+            "x":x,
+            "y":y
+        };
+        monome_model['mn_col_'+x+'_row_'+y] = item;
+    }
+
+    dispatch_event(monome_model['mn_col_'+x+'_row_'+y]);
     update_monome();
 }
 
 //update the monome view - sync leds w model
 function update_monome() {
-    monome_model.forEach(function(el,idx,arr){
-        el.forEach(function(el,idx,arr){
-            if(el.led_state) {
-                __.monome_led_on(el.x,el.y);
-            } else {
-                __.monome_led_off(el.x,el.y);
-            }
-        })
-    })
+
+    //if a key is missing from the current model, then it
+    //has been deleted and we want to turn the led off
+    Object.keys(previous_monome_model).map(function(el,idx,arr){
+
+        if(!monome_model[el]) {
+            __.monome_led_off(previous_monome_model[el].x,previous_monome_model[el].y);
+        }
+    });
+
+    //update the monome from the current model
+    Object.keys(monome_model).map(function(el,idx,arr) {
+        var item = monome_model[el];
+        if(item.led_state) {
+            __.monome_led_on(item.x, item.y);
+        } else {
+            __.monome_led_off(item.x, item.y);
+        }
+    });
+
+    //save a copy of the model for later reference
+    previous_monome_model = Object.assign({},monome_model);
+
 }
 
 function dispatch_control(item) {
@@ -355,23 +356,26 @@ function dispatch_preset(item) {
             __("#g3,#g4").volume(1/2);
             break;
         case 1:
-            __("#g1,#g2").volume(1/32);
-            __("#g3,#g4").volume(1/2);
+            __("#g1,#g2").volume(1/128);
+            __("#g3,#g4").volume(1/2-1/128);
             break;
         case 2:
-            __("#g1,#g2").volume(1/16);
-            __("#g3,#g4").volume(1/2);
+            __("#g1,#g2").volume(1/64);
+            __("#g3,#g4").volume(1/2-1/64);
             break;
         case 3:
-            __("#g1,#g2").volume(1/8);
-            __("#g3,#g4").volume(1/2);
+            __("#g1,#g2").volume(1/32);
+            __("#g3,#g4").volume(1/2-1/32);
             break;
         case 4:
-            __("#g1,#g2").volume(1/4);
-            __("#g3,#g4").volume(1/2);
+            __("#g1,#g2").volume(1/16);
+            __("#g3,#g4").volume(1/2-1/16);
             break;
         case 5:
-            __("#g1,#g2,#g3,#g4").volume(1/4);
+            __("#g1,#g2").volume(1/8-1/32);
+            __("#g3,#g4").volume(1/2-1/8-1/32);
+            break;
+        default:
             break;
     }
 }
@@ -384,11 +388,24 @@ __.monome_press(function(x,y,s) {
 });
 
 function set_individual_values(x,y) {
-    monome_model[x][y].led_state = 1;
+    monome_model['mn_col_'+x+'_row_'+y] = {
+        "led_state":1,
+        "x":x,
+        "y":y
+    };
 }
 
-//init model
-init_model();
+function clear_monome() {
+    for(var i=0;i<16;i++) {
+        for(var j=0;j<8;j++) {
+            __.monome_led_off(i, j);
+        }
+    }
+}
+
+//reset the sucker
+clear_monome();
+
 //endpoint min
 set_individual_values(0,endpoint_min-2);
 //endpoint max
