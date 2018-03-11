@@ -14,7 +14,7 @@
 
 __().sine({id:"s1"}).gain({id:"g1"}).panner(1).dac(0);
 __().sine({id:"s2"}).gain({id:"g2"}).panner(-1).dac(0);
-__().sine({id:"s3"}).gain({id:"g3",gain:0.5}).adsr({id:"a3"}).delay({
+__().sine({id:"s3"}).gain({id:"g3",gain:1}).adsr({id:"a3"}).delay({
     id:"d3",
     damping:1,
     cutoff:8000,
@@ -22,7 +22,7 @@ __().sine({id:"s3"}).gain({id:"g3",gain:0.5}).adsr({id:"a3"}).delay({
     delay:0
 }).panner(1).dac(0);
 
-__().sine({id:"s4"}).gain({id:"g4",gain:0.5}).adsr({id:"a4"}).delay({
+__().sine({id:"s4"}).gain({id:"g4",gain:1}).adsr({id:"a4"}).delay({
     id:"d4",
     damping:1,
     cutoff:8000,
@@ -276,7 +276,7 @@ function dispatch_control(item) {
         case 7:
             if(item.led_state) {
                 __.loop("start");
-                __("dac").volume(1).play();
+                __("dac").volume(0.5).play();
             } else {
                 __.loop("stop");
                 __("dac").volume(0).stop();
