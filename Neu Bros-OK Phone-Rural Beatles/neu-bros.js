@@ -1,4 +1,4 @@
-//LATEST LATEST THING Neu Bros/OK Phone/Rural Beatles
+//LATEST LATEST LATEST THING Neu Bros/OK Phone/Rural Beatles
 
 /*
  length min/max |
@@ -99,7 +99,7 @@ __.loop(tempo,function(f) {
         var throttle_size = Math.ceil((env_len+env_delay_array[env_delay])/tempo);
         env_test_func = __.throttle_factory(throttle_size);
         __("#d3").time(__.ms2sec(env_delay_array[env_delay]));
-        __("#a3").adsr("trigger",env_len/1000);
+        __("#a3").adsr("trigger",(env_len-(env_len * 0.10))/1000);
     }
 
     var freq2 = __.array_next(sequence2,offset2,endpoint2,function() {
@@ -115,7 +115,7 @@ __.loop(tempo,function(f) {
         var throttle_size2 = Math.ceil((env_len2+env_delay_array[env_delay2])/tempo);
         env_test_func2 = __.throttle_factory(throttle_size2);
         __("#d4").time(__.ms2sec(env_delay_array[env_delay2]));
-        __("#a4").adsr("trigger",env_len2/1000);
+        __("#a4").adsr("trigger",(env_len2-(env_len2 * 0.10))/1000);
     }
 
 });
@@ -360,37 +360,37 @@ function dispatch_preset(item) {
             break;
         case 1:
             //__("#g1,#g2").volume(0.045/4);
-            __("#g1,#g2").ramp(0.045/4,__.ms2sec(10),"gain");
+            __("#g1,#g2").ramp(0.045/5,__.ms2sec(10),"gain");
             //__("#g3,#g4").volume(1/2-1/128);
             break;
         case 2:
             //__("#g1,#g2").volume(0.09/4);
-            __("#g1,#g2").ramp(0.09/4,__.ms2sec(10),"gain");
+            __("#g1,#g2").ramp(0.09/5,__.ms2sec(10),"gain");
             //__("#g3,#g4").volume(1/2-1/64);
             break;
         case 3:
             //__("#g1,#g2").volume(0.18/4);
-            __("#g1,#g2").ramp(0.18/4,__.ms2sec(10),"gain");
+            __("#g1,#g2").ramp(0.18/5,__.ms2sec(10),"gain");
             //__("#g3,#g4").volume(1/2-1/32);
             break;
         case 4:
             //__("#g1,#g2").volume(0.25/4);
-            __("#g1,#g2").ramp(0.25/4,__.ms2sec(10),"gain");
+            __("#g1,#g2").ramp(0.25/5,__.ms2sec(10),"gain");
             //__("#g3,#g4").volume(1/2-1/16);
             break;
         case 5:
             //__("#g1,#g2").volume(0.35/4);
-            __("#g1,#g2").ramp(0.35/4,__.ms2sec(10),"gain");
+            __("#g1,#g2").ramp(0.35/5,__.ms2sec(10),"gain");
             //__("#g3,#g4").volume(1/2-1/8-1/32);
             break;
         case 6:
             //__("#g1,#g2").volume(0.707/4);
-            __("#g1,#g2").ramp(0.707/4,__.ms2sec(10),"gain");
+            __("#g1,#g2").ramp(0.707/5,__.ms2sec(10),"gain");
             //__("#g3,#g4").volume(1/2-1/8-1/32);
             break;
         case 7:
             //__("#g1,#g2").volume(1/4);
-            __("#g1,#g2").ramp(1/4,__.ms2sec(10),"gain");
+            __("#g1,#g2").ramp(1/5,__.ms2sec(10),"gain");
             //__("#g3,#g4").volume(1/2-1/8-1/32);
             break;
         default:
