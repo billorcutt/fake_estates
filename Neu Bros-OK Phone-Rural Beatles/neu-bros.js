@@ -1,4 +1,4 @@
- //LATEST LATEST LATEST THING Neu Bros/OK Phone/Rural Beatles
+//LATEST LATEST LATEST THING Neu Bros/OK Phone/Rural Beatles
 
 /*
  length min/max |
@@ -38,7 +38,7 @@ var major = __.scales("major");
 //make octave 7 for other section
 var sequence = __.fill_array(48,function(idx) {
     let add_to_octave = Math.floor(idx/7);
-    let pitch = __.array_next(major) + (__.random(4,7)+add_to_octave) * 12;
+    let pitch = __.array_next(major) + (7+add_to_octave) * 12;
     return {
         freq:__.pitch2freq(pitch),
         pitch:pitch
