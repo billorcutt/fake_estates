@@ -1,4 +1,4 @@
-//latest
+//LIVE IN LA - FINAL
 
 //adding this override to address the callback when limit is one.
 cracked.array_next = function(arr,offset,limit,callback) {
@@ -89,6 +89,18 @@ var chord3 = [0,4,7,10,12];
 var chord4 = [0,4,7,10,12];
 var step = 0;
 
+var detune_random = 10;
+
+var randomness = [
+    0,
+    10,
+    50,
+    100,
+    500,
+    750,
+    1000,
+    5000
+];
 
 var ok_to_run = [
     true,
@@ -115,7 +127,7 @@ __.loop({interval:75,steps:64},function(idx,data) {
     });
 
     for(var i=0;i<chord.length;i++) {
-      __("#s"+i).frequency(__.pitch2freq(p+i*12+48+step));
+      __("#s"+i).frequency(__.pitch2freq(p+i*12+48+step)).detune(__.random(0,detune_random));
     }     
     
   }
@@ -130,7 +142,7 @@ __.loop({interval:75,steps:64},function(idx,data) {
     });
 
     for(var j=0;j<chord2.length;j++) {
-      __("#s"+(j+5)).frequency(__.pitch2freq(p2+j*12+36+step));
+      __("#s"+(j+5)).frequency(__.pitch2freq(p2+j*12+36+step)).detune(__.random(0,detune_random));
     }
     
   }
@@ -145,7 +157,7 @@ __.loop({interval:75,steps:64},function(idx,data) {
         });
 
         for(var k=0;k<chord3.length;k++) {
-            __("#s"+(k+10)).frequency(__.pitch2freq(p3+k*12+24+step));
+            __("#s"+(k+10)).frequency(__.pitch2freq(p3+k*12+24+step)).detune(__.random(0,detune_random));
         }     
 
     }
@@ -160,7 +172,7 @@ __.loop({interval:75,steps:64},function(idx,data) {
         });
 
         for(var l=0;l<chord2.length;l++) {
-            __("#s"+(l+15)).frequency(__.pitch2freq(p4+l*12+72+step));
+            __("#s"+(l+15)).frequency(__.pitch2freq(p4+l*12+72+step)).detune(__.random(0,detune_random));
         }
 
     }
@@ -265,6 +277,7 @@ function dispatch_event(item) {
                 dispatch_level(item);
                 break;
             case 14:
+                dispatch_randomness(item);
                 break;
             default:
                 break;
@@ -421,6 +434,9 @@ function dispatch_level(item) {
     }
 }
 
+function dispatch_randomness(item) {
+    detune_random = randomness[item.y];  
+}
 
 //general purpose button handler
 __.monome_press(function(x,y,s) {
@@ -479,6 +495,8 @@ set_individual_values(12,0);
 //kick level
 set_individual_values(13,0);
 
+//randomness level
+set_individual_values(14,0);
 
 //update the leds
 update_monome();
