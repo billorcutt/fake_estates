@@ -1,6 +1,5 @@
-var counter_factory = function (num) {
+var counter_factory = function() {
     var index = 0;
-    var number = num;
     return function() {
         index++;
         return index;
