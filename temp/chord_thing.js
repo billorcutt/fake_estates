@@ -33,29 +33,29 @@ function grow_sequence(arr) {
 }
 
 var sequence_factory = function(arr,fn) {
-  var count = 0;
-	var current_index = 0;
-  var arr_copy = arr.slice();
-	var current_value = arr_copy[current_index];
-	var transition = true;
-	var first_run = true;
-  return function() {
-		if(count===current_value) {
-			if(current_index===arr_copy.length-1) {
-				current_index = 0;
-			} else {
-				current_index++;
-			}
-			count = 1;
-			transition=true;
-			current_value = arr_copy[current_index];
+   var count = 0;
+   var current_index = 0;
+   var arr_copy = arr.slice();
+   var current_value = arr_copy[current_index];
+   var transition = true;
+   var first_run = true;
+   return function() {
+	if(count===current_value) {
+		if(current_index===arr_copy.length-1) {
+			current_index = 0;
 		} else {
-			count++;
-			transition=first_run||false;
+			current_index++;
 		}
-		fn(transition,current_index);
-		first_run=false;
-  };
+		count = 1;
+		transition=true;
+		current_value = arr_copy[current_index];
+	} else {
+		count++;
+		transition=first_run||false;
+	}
+	fn(transition,current_index);
+	first_run=false;
+   };
 };
 
 function initOrgan1() {
