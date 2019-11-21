@@ -136,7 +136,7 @@ initOrgan3();
 initOrgan4();
 
 __.loop(300,function(){
-		__("sampler").stop().start();
+    __("sampler").stop().start();
     organ1();
     organ2();
     organ3();
