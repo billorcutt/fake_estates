@@ -1,3 +1,38 @@
+var counter_factory = function (num) {
+    var index = 0;
+    var number = num;
+    return function() {
+        index++;
+        return index;
+    };
+};
+
+var sequence_factory = function(arr,fn) {
+  var count = 0;
+  var current_index = 0;
+  var arr_copy = arr.slice();
+  var current_value = arr_copy[current_index];
+  var transition = true;
+  var first_run = true;
+  return function() {
+    if(count===current_value) {
+      if(current_index===arr_copy.length-1) {
+        current_index = 0;
+      } else {
+        current_index++;
+      }
+      count = 1;
+      transition=true;
+      current_value = arr_copy[current_index];
+    } else {
+      count++;
+      transition=first_run||false;
+    }
+    fn(transition,current_index);
+    first_run=false;
+  };
+};
+
 __().compressor().overdrive().overdrive().dac();
 __("compressor").reverb({seconds:1}).connect("dac");
 
@@ -25,38 +60,14 @@ var organ2 = function(){};
 var organ3 = function(){};
 var organ4 = function(){};
 
+var counter = counter_factory();
+
 function grow_sequence(arr) {
     var x = arr[1];
     x++;
     arr[1]=__.random(Math.max(1,x-3),Math.max(x-3,x+3));
     return arr;
 }
-
-var sequence_factory = function(arr,fn) {
-   var count = 0;
-   var current_index = 0;
-   var arr_copy = arr.slice();
-   var current_value = arr_copy[current_index];
-   var transition = true;
-   var first_run = true;
-   return function() {
-	if(count===current_value) {
-		if(current_index===arr_copy.length-1) {
-			current_index = 0;
-		} else {
-			current_index++;
-		}
-		count = 1;
-		transition=true;
-		current_value = arr_copy[current_index];
-	} else {
-		count++;
-		transition=first_run||false;
-	}
-	fn(transition,current_index);
-	first_run=false;
-   };
-};
 
 function initOrgan1() {
   organ1 = sequence_factory(sq_array1,function(b,c){
@@ -130,17 +141,20 @@ function initOrgan4() {
   });
 }
 
-initOrgan1();
-initOrgan2();
-initOrgan3();
-initOrgan4();
-
 __.loop(300,function(){
     __("sampler").stop().start();
     organ1();
     organ2();
     organ3();
     organ4();
+
+    if(counter()===8) {
+      initOrgan1();
+      initOrgan2();
+      initOrgan3();
+      initOrgan4();
+    }
+
 });
 
 __.loop("start").play();
