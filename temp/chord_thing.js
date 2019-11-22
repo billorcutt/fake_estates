@@ -72,11 +72,11 @@ function initOrgan1() {
   organ1 = sequence_factory(sq_array1,function(b,c){
     if(b && c==1) {
       chord.map(x => {
-        __("#ps1").polysynth("noteOn",x+36);
+        __("#ps1").polysynth("noteOn",x+48);
       });
     }  else if(b && c==2){
       chord.map(x => {
-        __("#ps1").polysynth("noteOff",x+36);
+        __("#ps1").polysynth("noteOff",x+48);
       });
       if(throttle1()) {
         grow_sequence(sq_array1);
