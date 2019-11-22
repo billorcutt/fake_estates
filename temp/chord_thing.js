@@ -32,7 +32,7 @@ var sequence_factory = function(arr,fn) {
   };
 };
 
-__().compressor().overdrive().overdrive().dac();
+__().compressor().dac();
 __("compressor").reverb({seconds:1}).connect("dac");
 
 __().sampler({path:"./Korg-N1R-Maracas.wav"}).panner(1).connect("dac");
@@ -44,15 +44,15 @@ __().polysynth({id:"ps4"}).gain().panner(-1).connect("compressor");
 
 var chord = __.chords("eleventh");
 
-var sq_array1 = [2,8,7];
-var sq_array2 = [2,10,5];
-var sq_array3 = [2,12,4];
-var sq_array4 = [2,10,6];
+var sq_array1 = [1,4,7];
+var sq_array2 = [2,4,6];
+var sq_array3 = [2,5,5];
+var sq_array4 = [2,4,6];
 
-var throttle1 = __.throttle_factory(5);
-var throttle2 = __.throttle_factory(5);
-var throttle3 = __.throttle_factory(5);
-var throttle4 = __.throttle_factory(5);
+var throttle1 = __.throttle_factory(4);
+var throttle2 = __.throttle_factory(8);
+var throttle3 = __.throttle_factory(12);
+var throttle4 = __.throttle_factory(16);
 
 var organ1 = function(){};
 var organ2 = function(){};
@@ -64,7 +64,7 @@ var counter = counter_factory();
 function grow_sequence(arr) {
     var x = arr[1];
     x++;
-    arr[1]=__.random(Math.max(1,x-3),Math.max(x-3,x+3));
+    arr[1]=__.random(Math.max(1,x-2),Math.max(x-2,x+2));
     return arr;
 }
 
@@ -140,20 +140,18 @@ function initOrgan4() {
   });
 }
 
+initOrgan1();
+initOrgan2();
+initOrgan3();
+initOrgan4();
+
 __.loop(300,function(){
     __("sampler").stop().start();
-    organ1();
-    organ2();
-    organ3();
-    organ4();
-
-    if(counter()===8) {
-      initOrgan1();
-      initOrgan2();
-      initOrgan3();
-      initOrgan4();
+    if(counter()>8) {
+        organ1();
+        organ2();
+        organ3();
+        organ4();
     }
-
 });
-
 __.loop("start").play();
