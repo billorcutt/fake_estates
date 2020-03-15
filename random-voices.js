@@ -1,19 +1,19 @@
-__().gain({id:"master",gain:1}).overdrive().out().play();
+__().gain({id:"master",gain:3/4}).overdrive().out().play();
 
 __().polysynth({id:"ps1", osc_type:"square"}).gain(1/5).panner(1).connect("#master");
 __().polysynth({id:"ps2", osc_type:"square"}).gain(1/5).panner(1/2).connect("#master");
 __().polysynth({id:"ps3", osc_type:"square"}).gain(1/5).panner(-1/2).connect("#master");
 __().polysynth({id:"ps4", osc_type:"square"}).gain(1/5).panner(-1).connect("#master");
 
-let threshold = __.random(0,100);
+let threshold = __.random(25,65);
 let coinflip = () => __.random(1,100) > threshold;
 
-//let chord = __.chords("eleventh");
-//let chord = __.chords("ninth");
-//let chord = __.chords("seventh");
 //let chord = __.chords("major");
+//let chord = __.chords("seventh");
+//let chord = __.chords("ninth");
 //let chord = __.chords("diminished");
-let chord = __.chords("thirteenth");
+let chord = __.chords("eleventh");
+//let chord = __.chords("thirteenth");
 
 function changeItUp() {
   
