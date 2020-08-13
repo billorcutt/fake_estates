@@ -50,8 +50,7 @@ var snd_arr = __.ls("<PATH-TO-SOUNDFILE-DIRECTORY>");
     });
 
     //connect all the gains to the dac
-    __("gain").gain(1/2).multi_out(3);
-      //__("gain").gain(1/2).out();
+    __("gain").gain(1/2).out();
 
     //initialize midi
     __.midi_init(function(){
