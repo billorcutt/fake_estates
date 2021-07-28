@@ -1,4 +1,3 @@
-
 //cutting edge...
 cracked.urnFactory = function (max) {
 
