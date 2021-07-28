@@ -89,4 +89,3 @@ __.midi_init(function(){
     });
 
 });
-
